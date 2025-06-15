@@ -2,6 +2,8 @@ import { Request,Response} from "express";
 import User from "../database/models/UserModel";
 import bcrypt from 'bcrypt'
 import generateToken from "../services/generateToken";
+import generateOtp from "../services/generateOtp";
+import sendMail from "../services/sendMail";
 
 
 
@@ -67,6 +69,35 @@ static async login(req:Request,res:Response){
       })
     }
    }
+}
+static async handleForgotPassword(req:Request,res:Response){
+const {email} =req.body
+if(!email){
+  res.status(400).json({message : "please provide email"})
+return }
+const [user] = await User.findAll({
+  where :{
+    email : email
+  }
+  
+})
+if(!user){
+   res.status(404).json({
+    email: "Email not registered"
+  })
+  return
+}
+const otp = generateOtp()
+ await sendMail({
+  to: email,
+  subject:"Digital Dokaan password change",
+  text :`you just request to reset password.here is your otp,${otp}`
+})
+
+res.status(200).json({
+  message : "password Reset OTP sucessfully"
+
+})
 }
 }
 
