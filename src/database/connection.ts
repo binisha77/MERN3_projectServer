@@ -25,4 +25,7 @@ console.log("milyo hai authentication!!")
 catch (error){
 console.log(error)
 }
+sequelize.sync({force : true}).then(()=>{
+  console.log("synced !!")
+})
 export default sequelize

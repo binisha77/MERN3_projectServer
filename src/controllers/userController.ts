@@ -25,7 +25,11 @@ email,
 password: bcrypt.hashSync(password,14),
 })
 
-
+await sendMail({
+  to : email,
+  subject :"Registration successfull on digital Dokaan",
+  text : "welcome to digital dokaan, Thank you for registering"
+})
 
 
 res.status(201).json({
@@ -93,7 +97,9 @@ const otp = generateOtp()
   subject:"Digital Dokaan password change",
   text :`you just request to reset password.here is your otp,${otp}`
 })
-
+user.otp = otp.toString()
+user.otpGeneratedTime = Date.now().toString()
+await user.save()
 res.status(200).json({
   message : "password Reset OTP sucessfully"
 
