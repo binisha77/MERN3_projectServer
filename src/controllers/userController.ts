@@ -4,6 +4,8 @@ import bcrypt from 'bcrypt'
 import generateToken from "../services/generateToken";
 import generateOtp from "../services/generateOtp";
 import sendMail from "../services/sendMail";
+import findData from "../services/findData";
+import sendResponse from "../services/sendResponse";
 
 
 
@@ -79,12 +81,13 @@ const {email} =req.body
 if(!email){
   res.status(400).json({message : "please provide email"})
 return }
-const [user] = await User.findAll({
-  where :{
-    email : email
-  }
+// const [user] = await User.findAll({
+//   where :{
+//     email : email
+//   }
   
-})
+// })
+const user = await findData(User,email)
 if(!user){
    res.status(404).json({
     email: "Email not registered"
@@ -100,10 +103,43 @@ const otp = generateOtp()
 user.otp = otp.toString()
 user.otpGeneratedTime = Date.now().toString()
 await user.save()
+
+
 res.status(200).json({
   message : "password Reset OTP sucessfully"
 
 })
+}
+ static async verifyOtp(req:Request,res:Response){
+  const {otp,email} = req.body
+  if(!otp || !email){
+   sendResponse(res,404,"please provide otp and email")
+    return
+  }
+ 
+const user = await findData(User,email)
+  if(!user){
+    sendResponse(res,404,"No user with that email")
+  }
+
+ const [data]= await User.findAll({
+    where :{
+      otp,
+      email
+    }
+  })
+  if(!data){
+    sendResponse(res,404,'Invalid OTP')
+    return
+  }
+  const currentTime = Date.now()
+  const otpGeneratedTime = data.otpGeneratedTime
+  if(currentTime - parseInt(otpGeneratedTime ) <= 120000){
+    sendResponse(res,200,"valid OTP, now you can proceed to reset password")
+  }else{
+   sendResponse(res,403,"OTP expired,Sorry try again later!!")
+  }
+
 }
 }
 
