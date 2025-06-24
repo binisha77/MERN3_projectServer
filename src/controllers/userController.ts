@@ -21,6 +21,18 @@ message : "please provide username,email,password"
   })
   return
 }
+const [data] = await User.findAll({
+    where :{
+      email:email
+    }
+  })
+if(data){
+   res.status(400).json({
+    message : "please try again later!!!"
+  })
+  return
+}
+
 
 const user = await User.create({
 username,

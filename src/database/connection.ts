@@ -7,8 +7,8 @@ import User from "./models/UserModel";
 
 
 const sequelize=new Sequelize(envConfig.connectionString as string,{
-   models: [User], // ✅ register model here
-  logging: false,
+   models: [__dirname + '/models'], // ✅ register model here
+ 
 })
 
 try{
@@ -25,7 +25,7 @@ console.log("milyo hai authentication!!")
 catch (error){
 console.log(error)
 }
-sequelize.sync({force : true}).then(()=>{
+sequelize.sync({force : false,alter:false}).then(()=>{
   console.log("synced !!")
 })
 export default sequelize
