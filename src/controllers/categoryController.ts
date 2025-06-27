@@ -25,6 +25,8 @@ async seedCategory():Promise<void>{
   }
 }
 async addCategory(req:Request,res:Response):Promise<void>{
+  //@ts-ignore
+  console.log(req.userId)
   const {categoryName} = req.body
   if(!categoryName){
     res.status(400).json({

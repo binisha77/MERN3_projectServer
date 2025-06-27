@@ -2,6 +2,7 @@ import express from 'express';
 import './database/connection';
 
 import userRoute from './routes/userRoute';
+import categoryRoute from './routes/categoryRoute'
 import User from './database/models/UserModel';
 import cors from 'cors'; 
 
@@ -18,5 +19,5 @@ app.use(cors({
 //   await User.findAll()
 // });
 app.use("/api/auth", userRoute);
-
+app.use("/api/category",categoryRoute)
 export default app;

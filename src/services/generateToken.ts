@@ -5,7 +5,8 @@ import { envConfig } from "../config/config"
 
 const generateToken =(userId : string) =>{
 const token = jwt.sign({userId : userId},envConfig.jwtSecretKey as string,{
-  expiresIn : '20d'
+   expiresIn :'20d'
+    // envConfig.jwtExpiresIn
 })
 return token
 }
