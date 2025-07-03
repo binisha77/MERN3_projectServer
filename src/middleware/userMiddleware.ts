@@ -3,13 +3,23 @@ import jwt from 'jsonwebtoken'
 import { envConfig } from "../config/config";
 import User from "../database/models/UserModel";
 
-enum Role{
+export enum Role{
   Admin = 'admin',
   Customer = "customer"
 }
 
+interface IExtendedRequest  extends Request {
+ user? :{
+  username :string,
+  email :string,
+  role :string, //naya type banako 
+  password:string,
+  id:string
+ }
+}
+
 class UserMiddlerare{
-  async isUserLoggedIn(req:Request,res:Response,next:NextFunction):Promise<void>{
+  async isUserLoggedIn(req:IExtendedRequest,res:Response,next:NextFunction):Promise<void>{
   const token = req.headers.authorization
   if(!token){
     res.status(403).json({
@@ -23,17 +33,23 @@ if(err){
     message :"Invalid token !!!"
   })
 }else{
-  console.log(result)
-  const userData = await User.findByPk(result.userId)
-  //@ts-ignore
-  req.user = userId
+  
+  const userData = await User.findByPk(result.userId)//{email:"",password:"",role:""}
+ if(!userData){
+  res.status(404).json({
+    message :"No user with that userId"
+  })
+  return
+ }
+ req.user = userData //req is  object 
   next()
 }
   })
   }
   restrictTo(...roles:Role[]){
-    return (req:Request,res:Response,next:NextFunction)=>{
-
+    return (req:IExtendedRequest,res:Response,next:NextFunction)=>{
+      let userRole = req.user?.role as Role
+      console.log(userRole,"Role")
     }
 
   }
