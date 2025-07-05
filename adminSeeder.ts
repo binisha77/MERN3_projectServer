@@ -11,7 +11,7 @@ const adminSeeder = async()=>{
   if(!data){
 await User.create({
   username : envConfig.adminUsername,
-  password :bcrypt.hashSync(envConfig.adminPassword as string, 8),
+  password :bcrypt.hashSync(envConfig.adminPassword as string, 10),
   email : envConfig.adminEmail,
   role :"admin"
 })

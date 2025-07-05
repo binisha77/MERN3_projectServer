@@ -11,10 +11,10 @@ function startServer(){
 
 const port = envConfig.port || 4000
 
-const server= app.listen(port, ()=>{
-    categoryController.seedCategory()
+app.listen(port, ()=>{
+     categoryController.seedCategory()
   console.log(`server has started at port[${port}]`)
-  adminSeeder()
+   adminSeeder()
 })
 }
 

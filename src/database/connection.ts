@@ -1,6 +1,8 @@
 import { Sequelize } from "sequelize-typescript"
 import { envConfig } from "../config/config"
 import User from "./models/UserModel";
+import Category from "./models/categoryModel";
+import Product from "./models/productModel";
 
 
 
@@ -25,7 +27,13 @@ console.log("milyo hai authentication!!")
 catch (error){
 console.log(error)
 }
-sequelize.sync({force : false,alter:false}).then(()=>{
+sequelize.sync({force : false,alter:true}).then(()=>{
   console.log("synced !!")
 })
+
+//relationship //
+Product.belongsTo(Category)
+Category.hasOne(Product)
+
+
 export default sequelize
