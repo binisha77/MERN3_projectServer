@@ -3,18 +3,20 @@ import Product from "../database/models/productModel";
 import Category from "../database/models/categoryModel";
 
 
-interface ProductRequest extends Request {
- file? :{
-  filename : string
- },
+// interface ProductRequest extends Request {
+//  file? :{
+//   filename : string,
+//   fieldname : string,
+//  },
 
-}
+//}
 
 
 class productController{
-  async createProduct(req: ProductRequest,res:Response):Promise<void> {
+  async createProduct(req: Request,res:Response):Promise<void> {
   const {productName,productPrice,productDescription,productTotalStock,discount,categoryId} = req.body
- const filename =req.file ? req.file.filename :"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWFaFKG08hKUN7BKpPlEq3dzSRjxAie-jJlQ&s"
+ 
+  const filename =req.file ? req.file.filename :"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWFaFKG08hKUN7BKpPlEq3dzSRjxAie-jJlQ&s"
  if(!productName || !productPrice || !productDescription || !productTotalStock ||!categoryId ){
 res.status(400).json({
   message :"please provide productName,productPrice,productDescription,productTotalStock"
