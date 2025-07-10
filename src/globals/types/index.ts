@@ -7,3 +7,14 @@ export enum OrderStatus{
   ontheway = "ontheway",
   delivered = "delivered" 
 }
+
+
+export enum PaymentMethod{
+  khalti ="khalti",
+  Esewa ="esewa",
+  COD ="cod"
+}
+export enum PaymentStatus{
+  paid="paid",
+  unpaid="unpaid"
+}
