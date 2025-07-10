@@ -27,13 +27,13 @@ console.log("milyo hai authentication!!")
 catch (error){
 console.log(error)
 }
-sequelize.sync({force : false,alter:true}).then(()=>{
+sequelize.sync({force : false,alter:false}).then(()=>{
   console.log("synced !!")
 })
 
 //relationship //
-Product.belongsTo(Category)
-Category.hasOne(Product)
+Product.belongsTo(Category,{foreignKey: 'categoryId'})
+Category.hasOne(Product,{foreignKey: 'categoryId'})
 
 
 export default sequelize

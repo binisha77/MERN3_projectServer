@@ -3,19 +3,14 @@ import Product from "../database/models/productModel";
 import Category from "../database/models/categoryModel";
 
 
-// interface ProductRequest extends Request {
-//  file? :{
-//   filename : string,
-//   fieldname : string,
-//  },
 
-//}
 
 
 class productController{
   async createProduct(req: Request,res:Response):Promise<void> {
   const {productName,productPrice,productDescription,productTotalStock,discount,categoryId} = req.body
- 
+  console.log(req.file)
+
   const filename =req.file ? req.file.filename :"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWFaFKG08hKUN7BKpPlEq3dzSRjxAie-jJlQ&s"
  if(!productName || !productPrice || !productDescription || !productTotalStock ||!categoryId ){
 res.status(400).json({
@@ -25,25 +20,28 @@ return
 }
  await Product.create({
  productName,
- productPrice,
+
   productDescription,
+  productPrice,
   productTotalStock,
   discount : discount || 0, // default to 0 if not provided
-  categoryId,
-  productImageUrl: filename,
+  categoryId: categoryId,
+  productImageUrl: filename
   
 
 
  })
  res.status(200).json({
   message :"Product created successfully",
+  
  })
  }
  async getAllProducts(req: Request, res: Response): Promise<void> {
   const datas =  await Product.findAll({
     include :[
       {
-        model : Category   
+        model : Category,
+        attributes : ['id','categoryName']   
       }
     ]
   })
@@ -61,7 +59,8 @@ return
     },
     include :[
       {
-        model : Category   
+        model : Category,
+        attributes: ['id', 'categoryName']   
       }
     ]
   })
@@ -70,7 +69,7 @@ return
     data : datas
    })
   }
-   async deleteProducts(req: Request, res: Response): Promise<void> {
+   async deleteProduct(req: Request, res: Response): Promise<void> {
   const {id} = req.params
   const datas = await Product.findAll({
     where :{
