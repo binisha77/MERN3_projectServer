@@ -3,6 +3,9 @@ import { envConfig } from "../config/config"
 import User from "./models/UserModel";
 import Category from "./models/categoryModel";
 import Product from "./models/productModel";
+import Order from "./models/orderModel";
+import Payment from "./models/paymentModel";
+import OrderDetails from "./models/orderDetail";
 
 
 
@@ -31,9 +34,23 @@ sequelize.sync({force : false,alter:true}).then(()=>{
   console.log("synced !!")
 })
 
-//relationship //
-Product.belongsTo(Category,{foreignKey: 'categoryId'})
-Category.hasOne(Product,{foreignKey: 'categoryId'})
 
+//relationship //
+Category.hasOne(Product,{foreignKey: 'categoryId'})
+Product.belongsTo(Category,{foreignKey: 'categoryId'})
+
+
+User.hasMany(Order,{foreignKey: 'UserId'})
+Order.belongsTo(User,{foreignKey: 'UserId'})
+
+//payment
+Order.hasOne(Payment,{foreignKey:'OrderId'}) 
+Payment.belongsTo(Order,{foreignKey:'OrderId'})
+
+Order.hasOne(OrderDetails,{foreignKey: 'OrderId'})
+OrderDetails.belongsTo(Order,{foreignKey: 'OrderId'})
+
+Product.hasMany(OrderDetails,{foreignKey: 'ProductId'})
+OrderDetails.belongsTo(Product,{foreignKey: 'ProductId'})
 
 export default sequelize
