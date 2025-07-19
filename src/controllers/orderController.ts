@@ -37,6 +37,8 @@ class OrderController{
     userId: userId
   })
   //for orderDetails
+  console.log(orderData,"orderData!!")
+  console.log(products)
   products.forEach(function(Product){
    OrderDetails.create({
   quantity : Product.productQty,
