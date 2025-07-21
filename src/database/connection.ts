@@ -6,6 +6,7 @@ import Product from "./models/productModel";
 import Order from "./models/orderModel";
 import Payment from "./models/paymentModel";
 import OrderDetails from "./models/orderDetail";
+import Cart from "./models/cartModel";
 
 
 
@@ -52,5 +53,12 @@ OrderDetails.belongsTo(Order,{foreignKey: 'OrderId'})
 
 Product.hasMany(OrderDetails,{foreignKey: 'ProductId'})
 OrderDetails.belongsTo(Product,{foreignKey: 'ProductId'})
+
+Cart.belongsTo(User, { foreignKey: 'userId' })
+User.hasOne(Cart, { foreignKey: 'userId' })
+
+Cart.belongsTo(Product, { foreignKey: 'productId' })
+Product.hasMany(Cart, { foreignKey: 'productId' })
+
 
 export default sequelize

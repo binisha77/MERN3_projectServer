@@ -1,0 +1,19 @@
+
+
+import express, { Router } from "express";
+import categoryController from "../controllers/categoryController";
+import userMiddleware, { Role } from "../middleware/userMiddleware";
+import User from "../database/models/UserModel";
+import errorHandler from "../services/errorHandler";
+import cartController from "../controllers/CartController";
+const router:Router = express.Router()
+
+router.route("/").post(userMiddleware.isUserLoggedIn, userMiddleware.accessTo(Role.Customer),
+  errorHandler(cartController.addToCart)).get(userMiddleware.isUserLoggedIn,userMiddleware.accessTo(Role.Customer),
+  errorHandler(cartController.getMyCartItems))
+
+ router.route("/:productId").delete(userMiddleware.isUserLoggedIn, userMiddleware.accessTo(Role.Customer),
+  errorHandler(cartController.addToCart)).patch(userMiddleware.isUserLoggedIn,userMiddleware.accessTo(Role.Customer),
+  errorHandler(cartController.updateCartItemQuantity))
+
+export default router
