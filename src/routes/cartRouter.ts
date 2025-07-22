@@ -8,12 +8,18 @@ import errorHandler from "../services/errorHandler";
 import cartController from "../controllers/CartController";
 const router:Router = express.Router()
 
-router.route("/").post(userMiddleware.isUserLoggedIn, userMiddleware.accessTo(Role.Customer),
-  errorHandler(cartController.addToCart)).get(userMiddleware.isUserLoggedIn,userMiddleware.accessTo(Role.Customer),
+router.route("/").post(userMiddleware.isUserLoggedIn, 
+  userMiddleware.accessTo(Role.Customer),
+  errorHandler(cartController.addToCart))
+  .get(userMiddleware.isUserLoggedIn,userMiddleware
+    .accessTo(Role.Customer),
   errorHandler(cartController.getMyCartItems))
 
- router.route("/:productId").delete(userMiddleware.isUserLoggedIn, userMiddleware.accessTo(Role.Customer),
-  errorHandler(cartController.addToCart)).patch(userMiddleware.isUserLoggedIn,userMiddleware.accessTo(Role.Customer),
+ router.route("/:productId").delete(userMiddleware.isUserLoggedIn, 
+  userMiddleware.accessTo(Role.Customer),
+  errorHandler(cartController.deleteMyCartItem))
+  .patch(userMiddleware.isUserLoggedIn,userMiddleware
+    .accessTo(Role.Customer),
   errorHandler(cartController.updateCartItemQuantity))
 
 export default router

@@ -67,7 +67,7 @@ if(userKoCartMaItemAlreadyXa)
         })
       }
      }
-async deleteCartItem(req:AuthRequest,res:Response){
+async deleteMyCartItem(req:AuthRequest,res:Response){
   const userId = req.user?.id
   const { productId } = req.params
   
